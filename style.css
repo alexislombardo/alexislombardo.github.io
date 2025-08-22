@@ -12,7 +12,7 @@
 
 /* navigation menu */
 nav {
-    background: rgb(55, 114, 95);
+    background: rgb(43, 156, 121);
     margin: 0 auto;
     display: flex;
     padding: 10px;
@@ -75,3 +75,30 @@ main {
 h2, h3 {
     margin: 0px;
 }
+
+/* Portfolio styles */
+.content h1 {
+  color: rgb(122, 55, 148);
+}
+
+#portfolio {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#portfolio li {
+  background: #9ddaae;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+#portfolio li:hover {
+  background: #b17cac;
+}
+
+#portfolio a {
+  text-decoration: none;
+  color: #0a0a0a;
+}
+
