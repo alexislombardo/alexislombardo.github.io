@@ -67,7 +67,7 @@ main {
 
 /* interests section styles */
 #interests {
-    border: 4px rgb(16, 59, 35) ridge;
+    border: 4px rgb(153, 85, 199) ridge;
     padding: 8px;
     margin-top: 20px;
 }
@@ -78,7 +78,7 @@ h2, h3 {
 
 /* Portfolio styles */
 .content h1 {
-  color: rgb(122, 55, 148);
+  color: rgb(91, 42, 110);
 }
 
 #portfolio {
@@ -87,18 +87,17 @@ h2, h3 {
 }
 
 #portfolio li {
-  background: #9ddaae;
+  background: #83c997;
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
 }
 
 #portfolio li:hover {
-  background: #9462a3;
+  background: #9370b1;
 }
 
 #portfolio a {
-  text-decoration: rgb(122, 55, 148) wavy underline;
+  text-decoration:none;
   color: #0a0a0a;
 }
-
