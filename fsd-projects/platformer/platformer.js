@@ -41,10 +41,15 @@ $(function () {
 
 
     // TODO 3 - Create Collectables
-      createCollectable("database",230, 600, 0.4);
-      createCollectable("database", 430, 500, 0.4);
-      createCollectable("database", 630, 400, 0.4);
-      createCollectable("database", 430, 300, 0.4);
+   
+
+    createCollectable("porsche911Grey", 210, 610, 40, 0.4);
+    createCollectable("ferrari", 420, 520, 40, 0.4);
+    createCollectable("jesko", 650, 420, 40, 0.4);
+    createCollectable("newjesko", 630, 210, 50, 0.4);
+    createCollectable("porschespyder", 950, 310, 50, 0.4);
+
+      
 
 
     
