@@ -25,11 +25,11 @@ var init = function (window) {
 
 
         // TODO 2 : Create a function that draws a circle 
-        function drawCircle(){                      // a function allows us to reuse code wo/ repeating ourselves; allows for the movement of multiple circles
-            circle = draw.randomCircleInArea(canvas, true, true, "#999", 2);
-            physikz.addRandomVelocity(circle, canvas, 5, 5);
-            view.addChild(circle);
-            circles.push(circle);
+        function drawCircle(){          //code to draw a circle           
+            circle = draw.randomCircleInArea(canvas, true, true, "#999", 2);   // uses an existing draw function to draw a circle of random size, color, and location within the canvas.It stores the output of that function.
+            physikz.addRandomVelocity(circle, canvas, 5, 5); // uses the physikz library to add a random velocity and direction to the circle
+            view.addChild(circle); // adds the circle as a child of view so that the circle appears on the screen
+            circles.push(circle); // saves the circle to an array of circles by pushing it to the end of the array
         }
 
 
@@ -39,16 +39,13 @@ var init = function (window) {
          // drawCircle[2];
          // drawCircle[3]
          // drawCircle[4]; 
-         // //*
+         //*
         
 
         // TODO 7 : Use a loop to create multiple circles
         for(var i = 0; i < 100; i++){ // using a loop allows for multiple circles to appear on the screen simultaneously
             drawCircle();
         }
-
-
-
 
         ///////////////////
         // PROGRAM LOGIC //
@@ -83,9 +80,9 @@ var init = function (window) {
            
 
             // TODO 8 / TODO 9 : Iterate over the array
-            for (var i = 0; i < circles.length; i++){
+            for (var i = 0; i < circles.length; i++){ // responsible for calculating and updating the circle's new position based on its current velocity,  simulating movement over time
+                game.checkCirclePosition(circles[i]); //checks if the circle's position is valid or requires a specific action like bouncing off a wall etc.
                 physikz.updatePosition(circles[i]);
-                game.checkCirclePosition(circles[i]);
             }
            
             
@@ -103,16 +100,18 @@ var init = function (window) {
                 circle = 0;
             }
             
-            // TODO 6 : YOUR CODE STARTS HERE ////////////////////// ask question
-            // Left boundary
-            if (circle.x < 0) {
-                circle.x = canvas.width;
+            // TODO 6 : YOUR CODE STARTS HERE ////////////////////// this block of code implemnts a wrap around boundary detection for the circles which creates a seeminly endless loop of movement
+             //* checks the circles current position against the boudaries of the canvas
+             // Instead of stopping or bouncing off the canvas, the circle transfers to the opposite side of the screen when it crosses a boundary
+            // Left boundary  
+            if (circle.x < 0) {            
+                circle.x = canvas.width;  // if the circles x coordinate is less than 0 the coordinate is then reset to canvas.width which causes it to instantly reappear on the far right edge
         } // Top Boundary
             if (circle.y < 0){
-            circle.y = canvas.height;
+            circle.y = canvas.height; // if the circle has move off the top edge of the canvas its y coordinate is reset to canvas.height which causes it to instantly reappear on the far bottom edge
         } // Bottom Boundary
-            if (circle.y > canvas.height) {
-            circle.y = 0;
+            if (circle.y > canvas.height) { // if the circle has moved off the bottpm edg the y coordinate is reset to 0 causing it to instantly reappear on th top edge
+            circle.y = 0; // 
       }
         
             // YOUR TODO 6 CODE ENDS HERE //////////////////////////
