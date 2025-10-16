@@ -34,16 +34,18 @@ var init = function (window) {
 
 
         // TODO 3 : Call the drawCircle() function
-         //*drawCircle[0]; 
-         // drawCircle[1];
-         // drawCircle[2];
-         // drawCircle[3]
-         // drawCircle[4]; 
-         //*
+        /*
+        drawCircle[0]; 
+        drawCircle[1];
+        drawCircle[2];
+        drawCircle[3]
+        drawCircle[4]; 
+        */
         
-
+        
         // TODO 7 : Use a loop to create multiple circles
-        for(var i = 0; i < 100; i++){ // using a loop allows for multiple circles to appear on the screen simultaneously
+       
+        for(var i = 0; i < 100; i++){  // the for loop will use the drawCircle function to create 100 circles simultaneously
             drawCircle();
         }
 
@@ -58,26 +60,24 @@ var init = function (window) {
         */
         function update() {
             // TODO 4 : Update the position of each circle using physikz.updatePosition()
-           //*
-           //  physikz.updatePosition(circles[0]); // these move the circles off of the screen
-          //   physikz.updatePosition(circles[1]);
-         //   physikz.updatePosition(circles[2]);
-          //  physikz.updatePosition(circles[3]);
-           // physikz.updatePosition(circles[4]);
-            //*
+           /*
+           physikz.updatePosition(circles[0]); // these move the circles off of the screen
+           physikz.updatePosition(circles[1]);
+            physikz.updatePosition(circles[2]);
+            physikz.updatePosition(circles[3]);
+           physikz.updatePosition(circles[4]);
+            */
 
 
             
             // TODO 5 : Call game.checkCirclePosition() on your circles
-            //*
-            // game.checkCirclePosition(circles[0]);
-            // game.checkCirclePosition(circles[1]);
-            //game.checkCirclePosition(circles[2]);
-           // game.checkCirclePosition(circles[3]);
-            //game.checkCirclePosition(circles[4]);
-
-
-           
+            /*
+            game.checkCirclePosition(circles[0]);
+            game.checkCirclePosition(circles[1]);
+            game.checkCirclePosition(circles[2]);
+            game.checkCirclePosition(circles[3]);
+            game.checkCirclePosition(circles[4]);
+            */
 
             // TODO 8 / TODO 9 : Iterate over the array
             for (var i = 0; i < circles.length; i++){ // responsible for calculating and updating the circle's new position based on its current velocity,  simulating movement over time
@@ -101,14 +101,14 @@ var init = function (window) {
             }
             
             // TODO 6 : YOUR CODE STARTS HERE ////////////////////// this block of code implemnts a wrap around boundary detection for the circles which creates a seeminly endless loop of movement
-             //* checks the circles current position against the boudaries of the canvas
+            // checks the circles current position against the boudaries of the canvas
              // Instead of stopping or bouncing off the canvas, the circle transfers to the opposite side of the screen when it crosses a boundary
             // Left boundary  
             if (circle.x < 0) {            
                 circle.x = canvas.width;  // if the circles x coordinate is less than 0 the coordinate is then reset to canvas.width which causes it to instantly reappear on the far right edge
         } // Top Boundary
             if (circle.y < 0){
-            circle.y = canvas.height; // if the circle has move off the top edge of the canvas its y coordinate is reset to canvas.height which causes it to instantly reappear on the far bottom edge
+            circle.y = canvas.height; // if the circle has moved off the top edge of the canvas its y coordinate is reset to canvas.height which causes it to instantly reappear on the far bottom edge
         } // Bottom Boundary
             if (circle.y > canvas.height) { // if the circle has moved off the bottpm edg the y coordinate is reset to 0 causing it to instantly reappear on th top edge
             circle.y = 0; // 
