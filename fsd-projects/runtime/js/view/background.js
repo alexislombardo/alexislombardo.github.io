@@ -55,7 +55,7 @@ var background = function (window) {
             }
 
             var moon = draw.bitmap("img/moon.png"); // creates a bitmap object using the moon image and stores it in the variable moon
-            moon.x = canvas.width - 400; // sets the moon's X position
+            moon.x = canvas.width - 200; // sets the moon's X position
             moon.y = groundY - 400; // sets the moon's Y position
             moon.scaleX = 10.0; // scales the moon's width
             moon.scaleY = 10.0; // scales the moon's height
@@ -64,8 +64,9 @@ var background = function (window) {
            
             // TODO 4: Part 1 - Add buildings!     Q: This is before TODO 4 for a reason! Why?
             for (var i = 0; i < 5; ++i) {
-                var buildingHeight = 450 * Math.random();
-                var building = draw.rect(75, buildingHeight, "gray", "Black", 1);
+                var buildingColors = ["LightGray", "DarkRed", "LightGray", "White", "Gray"]
+                var buildingHeight = 300 * Math.random();
+                var building = draw.rect(75, buildingHeight, buildingColors[i], "Black", 1);
                 building.x = 200 * i;
                 building.y = groundY - buildingHeight;
                 background.addChild(building);
@@ -99,10 +100,12 @@ var background = function (window) {
             // TODO 4: Part 2 - Parallax
             for (var i = 0; i < buildings.length; i++) {
                  var building = buildings[i];
+                 building.x -= 1;
 
-                if(building <-200){
-                    buildings += 1.75;
+                if(building.x < -200){
+                    building.x = canvasWidth;
                 }
+                
 }
 
         } // end of update function - DO NOT DELETE

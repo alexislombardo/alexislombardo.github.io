@@ -19,17 +19,26 @@ var runLevels = function (window) {
     // TODOs 5 through 11 go here
     // BEGIN EDITING YOUR CODE HERE
     function createObstacle(x, y, damage){
-        var hitZoneSize = 25;
-        var damageFromObstacle = damage;
-       obstacleHitZone.x = x;
-       obstacleHitZone.y = y;
-        game.addGameItem(obstacleHitZone);
-        var obstacleImage = draw.bitmap("img/sawblade.png");
-       obstacleHitZone.addChild(obstacleImage);
+      var hitZoneSize = 25;
+      var damageFromObstacle = damage;
+      var obstacleHitZone = game.createObstacle(hitZoneSize, damageFromObstacle);
+      obstacleHitZone.x = x;
+      obstacleHitZone.y = y;
+      game.addGameItem(obstacleHitZone);
+      var obstacleImage = draw.bitmap("img/sawblade.png");
+      obstacleHitZone.addChild(obstacleImage);
+      obstacleImage.x = -25;
+      obstacleImage.y = -25;
+
+      obstacleHitZone.rotationalVelocity = 10;
     }
     createObstacle(400, groundY - 110, 10);
-    createObstacle(600, groundY - 110, 10);
-    createObstacle(800, groundY - 110, 10);
+    createObstacle(600, groundY - 110, 20);
+    createObstacle(800, groundY - 110, 30);
+
+
+
+
 
     var enemy = game.createGameItem("enemy", 25);
     var redSquare = draw.rect(50, 50, "red");
@@ -41,6 +50,17 @@ var runLevels = function (window) {
     game.addGameItem(enemy);
 
     enemy.velocityX -= 3;
+    enemy.onPlayerCollision = function(){
+      game.changeIntegrity(-10);
+    };
+     enemy.onProjectileCollision = function(){
+      game.increaseScore(100);
+      // enemy.flyTo();
+      // enemy.shrink();
+      enemy.fadeOut();
+    };
+
+
     function startLevel() {
       // TODO 13 goes below here
 
