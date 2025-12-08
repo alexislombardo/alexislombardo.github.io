@@ -43,9 +43,14 @@ var background = function (window) {
             // TODO 1:
             // this currently fills the background with an obnoxious yellow;
             // you should modify both the height and color to suit your game
-            var backgroundFill = draw.rect(canvasWidth,groundY,'blue'); // draws a rectangle and stores it in the var background fill
+           var backgroundFill = draw.bitmap("img/mindFlayer.png"); // draws a rectangle and stores it in the var background fill
             background.addChild(backgroundFill); // adds the backgroundFill to the background object
-            
+            var backgroundImage = draw.bitmap("img/redbackground.png");
+            backgroundImage.x = 0;
+            backgroundImage.y = 0;
+            backgroundImage.scaleX = 2;
+            backgroundImage.scaleY = 1.13;            
+            background.addChild(backgroundImage);
             // TODO 2: - Add a moon and starfield
              for(var i = 0; i < 30; i ++){
                 var circle = draw.circle(2, "white", "LightGray", 2); // create a circle with a specified radius, border and fill color, and alpha and stores it in the variable circle
@@ -55,10 +60,10 @@ var background = function (window) {
             }
 
             var moon = draw.bitmap("img/moon.png"); // creates a bitmap object using the moon image and stores it in the variable moon
-            moon.x = canvas.width - 200; // sets the moon's X position
+            moon.x = canvas.width - 300; // sets the moon's X position
             moon.y = groundY - 400; // sets the moon's Y position
-            moon.scaleX = 10.0; // scales the moon's width
-            moon.scaleY = 10.0; // scales the moon's height
+            moon.scaleX = 0.75; // scales the moon's width
+            moon.scaleY = 0.75; // scales the moon's height
             background.addChild(moon); // adds the moon to the background container
             
            
