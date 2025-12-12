@@ -14,89 +14,100 @@ var runLevels = function (window) {
     var levelData = window.opspark.levelData;
 
     // set this to true or false depending on if you want to see hitzones
-    game.setDebugMode(true);
+    game.setDebugMode(false);
 
     // TODOs 5 through 11 go here
     // BEGIN EDITING YOUR CODE HERE
-    function createObstacle(x, y, damage){
-      var hitZoneSize = 25;
-      var damageFromObstacle = damage;
-      var obstacleHitZone = game.createObstacle(hitZoneSize, damageFromObstacle);
-      obstacleHitZone.x = x;
-      obstacleHitZone.y = y;
-      game.addGameItem(obstacleHitZone);
-      var obstacleImage = draw.bitmap("img/demobats.png");
-      obstacleHitZone.addChild(obstacleImage);
-      obstacleImage.x = -10;
-      obstacleImage.y = -10;
+    function createObstacle(x, y, hZSize,damage, image, offsetX, offsetY, velocity, scale){  
+    var obstacle = game.createGameItem("obstacle", hZSize); // creates the obstacle and the hit zone 
+    var obstacleImage = draw.bitmap(image); // creates the image of the obstacle and stores it to the variable obstacleImage
+    obstacleImage.x = offsetX;// x offset for the image's hitzone
+    obstacleImage.y = offsetY; // y offset for the image's hitzone
+    obstacle.addChild(obstacleImage);// attaches the image to the obstacle object
+    obstacle.x = x; // setting the obstacle's x poistion
+    obstacle.y =y;  // setting the obstacle's y poistion
+    game.addGameItem(obstacle); // adds the obstacle to the game
+ 
+    obstacle.velocityX -= velocity; // animating the obstacle across the screen 
+    obstacleImage.scaleX = scale;
+    obstacleImage.scaleY = scale;
+      // handles when halle collides w/obstacle
+    obstacle.onPlayerCollision = function(){
+      game.changeIntegrity(damage); // reduces player health
+    };
+
+
+
 
     }
 
 
 
-    function createEnemy(x, y){
-      var enemy = game.createGameItem("enemy", 25); // creates the enemy and the hit zone 
-      var enemyImage = draw.bitmap(50, 50, "red"); // creates the image of the enemy and stores it to the variable enemyImage
-      enemyImage.x = -25; // x offset for the image's hitzone
-      enemyImage.y = -25; // y offset for the image's hitzone
+    function createEnemy(x, y, hZSize,damage, image, offsetX, offsetY, velocity, scale, scoreChange){
+      var enemy = game.createGameItem("enemy", hZSize); // creates the enemy and the hit zone 
+      var enemyImage = draw.bitmap(image); // creates the image of the enemy and stores it to the variable enemyImage
+      enemyImage.x = offsetX; // x offset for the image's hitzone
+      enemyImage.y = offsetY; // y offset for the image's hitzone
       enemy.addChild(enemyImage); // attaches the image to the enemy object
       enemy.x = x; // setting the enemy's x poistion
       enemy.y = y; // setting the enemy's y poistion
       game.addGameItem(enemy); // adds the enemy to the game
-
-      enemy.velocityX -= 3; // animating the enemy across the screen 
-
+ 
+      enemy.velocityX -= velocity; // animating the enemy across the screen 
+      enemyImage.scaleX = scale;
+      enemyImage.scaleY = scale;
       // handles when halle collides w/enemy
       enemy.onPlayerCollision = function(){
-      game.changeIntegrity(-10); // reduces player health
+      game.changeIntegrity(damage); // reduces player health
     };
 
     // handles when halle shoots the enemy
      enemy.onProjectileCollision = function(){
-      game.increaseScore(100); // increases the player's score
+      game.increaseScore(scoreChange); // increases the player's score
       // enemy.flyTo();
       // enemy.shrink();
       enemy.fadeOut(); // after collision the enemy fades out 
     };
     }
-    createEnemy(700, groundY - 50);
-    createEnemy(800, groundY -50);
+    
 
-    function createReward(x, y){
-      var reward= game.createGameItem("reward", 25); // creates the reward and the hit zone 
-      var rewardImage = draw.rect(50, 50, "purple"); // creates the image of the reward and stores it to the variable rewardImage
-      rewardImage.x = -25; // x offset for the image's hitzone
-      rewardImage.y = -25; // y offset for the image's hitzone
+    function createReward(x, y, hZSize, image, offsetX, offsetY, velocity, scale, scoreChange){
+      var reward= game.createGameItem("reward", hZSize); // creates the reward and the hit zone 
+      var rewardImage = draw.bitmap(image); // creates the image of the reward and stores it to the variable rewardImage
+      rewardImage.x = offsetX; // x offset for the image's hitzone
+      rewardImage.y = offsetY; // y offset for the image's hitzone
       reward.addChild(rewardImage); // attaches the image to the reward object
       reward.x = x; // setting the reward's x poistion
       reward.y = y; // setting the reward's y poistion
       game.addGameItem(reward); // adds the reward to the game
 
-      reward.velocityX -= 1.25; // animating the reward across the screen 
-
+      reward.velocityX -= velocity; // animating the reward across the screen 
+      rewardImage.scaleX = scale;
+      rewardImage.scaleY = scale;
       // handles when halle collides w/reward
       reward.onPlayerCollision = function(){
-        game.increaseScore(100); // increases the player's score
+        game.increaseScore(scoreChange); // increases the player's score
         reward.fadeOut();
     
       };
     }
 
 
-     createReward(700, groundY - 100);
+     
 
-    function createLevelMarker(x, y){
-      var levelMarker= game.createGameItem("level", 25); // creates the level and the hit zone 
-      var levelImage = draw.rect(50, 50, "yellow"); // creates the image of the level and stores it to the variable rewardImage
-      levelImage.x = -25; // x offset for the image's hitzone
-      levelImage.y = -25; // y offset for the image's hitzone
+    function createLevelMarker(x, y,hZSize, image, offsetX, offsetY, velocity, scale ){
+      var levelMarker= game.createGameItem("level", hZSize); // creates the level and the hit zone 
+      var levelImage = draw.bitmap(image); // creates the image of the level and stores it to the variable rewardImage
+      levelImage.x = offsetX; // x offset for the image's hitzone
+      levelImage.y = offsetY; // y offset for the image's hitzone
       levelMarker.addChild(levelImage); // attaches the image to the level object
       levelMarker.x = x; // setting the level's x poistion
       levelMarker.y = y; // setting the level's y poistion
       game.addGameItem(levelMarker); // adds the level to the game
 
-      levelMarker.velocityX -= 1.25; // animating the level across the screen 
-
+      levelMarker.velocityX -= velocity; // animating the level across the screen 
+      levelImage.scaleX = scale;
+      levelImage.scaleY = scale;
       // handles when halle collides w/ levelMarker
       levelMarker.onPlayerCollision = function(){
        game.changeIntegrity(300); // reduces player health
@@ -105,7 +116,7 @@ var runLevels = function (window) {
       };
     }
 
-    createLevelMarker(850, groundY - 90);
+    
 
     function startLevel() {
       // TODO 13 goes below here
@@ -116,12 +127,19 @@ var runLevels = function (window) {
         var element = levelObjects[i];
 
         if(element.type === "obstacle"){
-          createObstacle(element.x, element.y, element.damage);
+          createObstacle(element.x, element.y, element.hZSize,element.damage, element.image, element.offsetX, element.offsetY, element.velocity, element.scale);
+        } 
+        if(element.type === "enemy"){
+          createEnemy(element.x, element.y, element.hZSize,element.damage, element.image, element.offsetX, element.offsetY, element.velocity, element.scale, element.scoreChange);
+        } 
+      
+        if(element.type === "reward"){
+          createReward(element.x, element.y, element.hZSize, element.image, element.offsetX, element.offsetY, element.velocity, element.scale, element.scoreChange);
         }
-     
+        if(element.type === "levelMarker"){
+          createLevelMarker(element.x, element.y,element.hZSize, element.image, element.offsetX, element.offsetY, element.velocity, element.scale);
+        }
       }
-
-
       //////////////////////////////////////////////
       // DO NOT EDIT CODE BELOW HERE
       //////////////////////////////////////////////

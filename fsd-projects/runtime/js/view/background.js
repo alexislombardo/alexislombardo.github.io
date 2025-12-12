@@ -43,32 +43,38 @@ var background = function (window) {
             // TODO 1:
             // this currently fills the background with an obnoxious yellow;
             // you should modify both the height and color to suit your game
-           var backgroundFill = draw.bitmap("img/mindFlayer.png"); // draws a rectangle and stores it in the var background fill
+           var backgroundFill = draw.rect(canvasWidth, canvasHeight, "darkRed"); // draws a rectangle and stores it in the var background fill
             background.addChild(backgroundFill); // adds the backgroundFill to the background object
-            var backgroundImage = draw.bitmap("img/redbackground.png");
+            var backgroundImage = draw.bitmap("img/mindFlayer.jpg");
+                // var bottomImage = draw.rect(canvasWidth/2, canvasHeight/2, "red");
+            // Scale image to fit width
+            backgroundImage.scaleX = canvasWidth / backgroundImage.image.width;
+            backgroundImage.scaleY =  backgroundImage.scaleX ;
+            // After scaling, compute its new height
+            var scaledHeight = backgroundImage.image.height * backgroundImage.scaleY;
+            // Position it so the BOTTOM of the image touches the ground
             backgroundImage.x = 0;
-            backgroundImage.y = 0;
-            backgroundImage.scaleX = 2;
-            backgroundImage.scaleY = 1.13;            
+            backgroundImage.y = groundY - scaledHeight;
             background.addChild(backgroundImage);
+           // background.addChild(bottomImage);
             // TODO 2: - Add a moon and starfield
-             for(var i = 0; i < 30; i ++){
-                var circle = draw.circle(2, "white", "LightGray", 2); // create a circle with a specified radius, border and fill color, and alpha and stores it in the variable circle
-                circle.x = canvasWidth * Math.random(); // sets a random x position within the canvas width
-                circle.y = groundY * Math.random(); // sets a random y position within groundY
-                background.addChild(circle); // adds circle to the background container
-            }
+            // for(var i = 0; i < 30; i ++){
+               // var circle = draw.circle(2, "white", "LightGray", 2); // create a circle with a specified radius, border and fill color, and alpha and stores it in the variable circle
+              //  circle.x = canvasWidth * Math.random(); // sets a random x position within the canvas width
+                //circle.y = groundY * Math.random(); // sets a random y position within groundY
+               // background.addChild(circle); // adds circle to the background container
+          //  }
 
-            var moon = draw.bitmap("img/moon.png"); // creates a bitmap object using the moon image and stores it in the variable moon
-            moon.x = canvas.width - 300; // sets the moon's X position
-            moon.y = groundY - 400; // sets the moon's Y position
-            moon.scaleX = 0.75; // scales the moon's width
-            moon.scaleY = 0.75; // scales the moon's height
-            background.addChild(moon); // adds the moon to the background container
+            //var moon = draw.bitmap("img/moon.png"); // creates a bitmap object using the moon image and stores it in the variable moon
+            //moon.x = canvas.width - 300; // sets the moon's X position
+           //moon.y = groundY - 400; // sets the moon's Y position
+          //  moon.scaleX = 0.75; // scales the moon's width
+            //moon.scaleY = 0.75; // scales the moon's height
+            //background.addChild(moon); // adds the moon to the background container *//
             
            
             // TODO 4: Part 1 - Add buildings!     Q: This is before TODO 4 for a reason! Why?
-            for (var i = 0; i < 5; ++i) {
+            /*for (var i = 0; i < 5; ++i) {
                 var buildingColors = ["LightGray", "DarkRed", "LightGray", "White", "Gray"]
                 var buildingHeight = 300 * Math.random();
                 var building = draw.rect(75, buildingHeight, buildingColors[i], "Black", 1);
@@ -76,13 +82,14 @@ var background = function (window) {
                 building.y = groundY - buildingHeight;
                 background.addChild(building);
                 buildings.push(building);
-            }
+            }*/
             
             // TODO 3: Part 1 - Add a tree
-            tree = draw.bitmap("img/tree.png"); // creates a bitmap object using the tree image and stores it in the variable tree
-            tree.x = 600; // sets the x value of the tree
-            tree.y = groundY - 220; // sets the y value of the tree
-            background.addChild(tree); // adds the tree to th background container
+            tree = draw.bitmap("img/roots4.png"); // creates a bitmap object using the roots image and stores it in the variable tree
+            tree.x = 600; // sets the x value of the roots
+            
+            tree.y = groundY; // sets the y value of the roots
+            background.addChild(tree); // adds the roots to th background container
             
         } // end of render function - DO NOT DELETE
         
@@ -96,7 +103,7 @@ var background = function (window) {
             var groundY = ground.y;
             
             // TODO 3: Part 2 - Move the tree!
-            tree.x = tree.x - 1.75;
+            tree.x = tree.x - 1.75; //animates the tree
 
             if (tree.x < -200) {
                 tree.x = canvasWidth;
