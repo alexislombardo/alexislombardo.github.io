@@ -37,6 +37,7 @@ var init = function (window) {
     "#ccc",
     "left"
   );
+
   help.x = 10;
   help.y = ground.y + ground.getBounds().height + 10;
   view.addChild(help);

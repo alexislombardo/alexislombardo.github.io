@@ -35,13 +35,7 @@ var runLevels = function (window) {
     obstacle.onPlayerCollision = function(){
       game.changeIntegrity(damage); // reduces player health
     };
-
-
-
-
     }
-
-
 
     function createEnemy(x, y, hZSize,damage, image, offsetX, offsetY, velocity, scale, scoreChange){
       var enemy = game.createGameItem("enemy", hZSize); // creates the enemy and the hit zone 
@@ -88,13 +82,9 @@ var runLevels = function (window) {
       reward.onPlayerCollision = function(){
         game.increaseScore(scoreChange); // increases the player's score
         reward.fadeOut();
-    
       };
     }
-
-
-     
-
+   
     function createLevelMarker(x, y,hZSize, image, offsetX, offsetY, velocity, scale ){
       var levelMarker= game.createGameItem("level", hZSize); // creates the level and the hit zone 
       var levelImage = draw.bitmap(image); // creates the image of the level and stores it to the variable rewardImage
@@ -115,8 +105,6 @@ var runLevels = function (window) {
        startLevel();
       };
     }
-
-    
 
     function startLevel() {
       // TODO 13 goes below here
