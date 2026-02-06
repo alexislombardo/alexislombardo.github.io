@@ -22,9 +22,9 @@ const apple = {};
 const snake = {};
 
 // Constant Variables
-var ROWS = 20;
-var COLUMNS = 20;
-var SQUARE_SIZE = 20;
+var ROWS = 25;
+var COLUMNS = 25;
+var SQUARE_SIZE = 25;
 var KEY = {
   LEFT: 37,
   UP: 38,
@@ -218,7 +218,7 @@ function handleAppleCollision() {
   makeSnakeSquare(row, column);
   snake.tail.element.css("backgroundColor", colors[colorIndex]);
   colorIndex++;
-  if(colorIndex > colors.length){
+  if(colorIndex >= colors.length){
     colorIndex = 0;
   }
 }
