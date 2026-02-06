@@ -12,7 +12,8 @@ var highScoreElement = $("#highScore");
 // Game Variables
 var score = 0; // variable to keep track of the score
 var started = false; // variable to keep track of whether the game has started
-
+var colors = ["red", "orange", "yellow", "green", "blue", "purple"];
+ var colorIndex = 0; 
 // TODO 4, Part 1: Create the apple variable
 const apple = {};
 
@@ -182,8 +183,6 @@ function hasHitWall() {
     return true;
  }
 
-
-
   return false;
 }
 
@@ -194,11 +193,15 @@ function hasCollidedWithApple() {
     
     HINT: Both the apple and the snake's head are aware of their own row and column
   */
+    if(snake.head.row === apple.row && snake.head.column === apple .column){
+      return true;
+    }
+       return false;
+    }
 
 
-
-  return false;
-}
+  
+  
 
 function handleAppleCollision() {
   // increase the score and update the score DOM element
@@ -213,6 +216,11 @@ function handleAppleCollision() {
   var column = snake.tail.column;
   
   makeSnakeSquare(row, column);
+  snake.tail.element.css("backgroundColor", colors[colorIndex]);
+  colorIndex++;
+  if(colorIndex > colors.length){
+    colorIndex = 0;
+  }
 }
 
 function hasCollidedWithSnake() {
@@ -223,6 +231,13 @@ function hasCollidedWithSnake() {
     HINT: Each part of the snake's body is stored in the snake.body Array. The
     head and each part of the snake's body also knows its own row and column.
   */
+    for(var i = 1; i < snake.body.length; i++){
+      var bodySquare = snake.body[i];
+      if(snake.head.row === bodySquare.row && snake.head.column === bodySquare.column){
+        return true;
+      }
+    }
+ 
 
 
 
@@ -277,12 +292,16 @@ function makeSnakeSquare(row, column) {
   // initialize a new snakeSquare Object
       const snakeSquare = {};
 
+
+
+      
       // make the snakeSquare element and add it to the board
       snakeSquare.element = $("<div>").addClass("snake").appendTo(board);
 
       // assign the row and column position
       snakeSquare.row = row;
       snakeSquare.column = column;
+      
 
       // set the snake’s position visually
       repositionSquare(snakeSquare);
@@ -295,6 +314,7 @@ function makeSnakeSquare(row, column) {
       // add the square to the snake’s body and update the tail
       snake.body.push(snakeSquare);
       snake.tail = snakeSquare;
+
 }
 
 /* 
@@ -347,6 +367,7 @@ function getRandomAvailablePosition() {
 
   /* Generate random positions until one is found that doesn't overlap with the snake */
   while (!spaceIsAvailable) {
+    
     randomPosition.column = Math.floor(Math.random() * COLUMNS);
     randomPosition.row = Math.floor(Math.random() * ROWS);
     spaceIsAvailable = true;
@@ -356,9 +377,13 @@ function getRandomAvailablePosition() {
       not occupied by a snakeSquare in the snake's body. If it is then set 
       spaceIsAvailable to false so that a new position is generated.
     */
-
-
-
+   for(var i = 0; i < snake.body.length; i++){
+      var bodySquare = snake.body[i];
+      if(randomPosition.row === bodySquare.row && randomPosition.column === bodySquare.column){
+          spaceIsAvailable = false;
+      }
+    }
+  
   }
 
   return randomPosition;
