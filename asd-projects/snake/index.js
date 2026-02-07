@@ -270,7 +270,6 @@ function endGame() {
  */
 function makeApple() {
   // TODO 4, Part 2: Fill in this function's code block
-  apple = {};
   apple.element = $("<div>").addClass("apple").appendTo(board);
 
   var randomPosition = getRandomAvailablePosition();
