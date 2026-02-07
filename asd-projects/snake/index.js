@@ -24,7 +24,7 @@ const snake = {};
 // Constant Variables
 var ROWS = 25;
 var COLUMNS = 25;
-var SQUARE_SIZE = 25;
+var SQUARE_SIZE = 20;
 var KEY = {
   LEFT: 37,
   UP: 38,
@@ -193,11 +193,9 @@ function hasCollidedWithApple() {
     
     HINT: Both the apple and the snake's head are aware of their own row and column
   */
-    if(snake.head.row === apple.row && snake.head.column === apple .column){
-      return true;
-    }
-       return false;
-    }
+    return ( snake.head.row === apple.row && snake.head.column === apple.column);
+
+   }
 
 
   
@@ -210,7 +208,7 @@ function handleAppleCollision() {
 
   // Remove existing Apple and create a new one
   apple.element.remove();
-  makeApple();
+  
 
   var row = snake.tail.row;
   var column = snake.tail.column;
@@ -221,6 +219,8 @@ function handleAppleCollision() {
   if(colorIndex >= colors.length){
     colorIndex = 0;
   }
+
+  makeApple();
 }
 
 function hasCollidedWithSnake() {
@@ -270,6 +270,7 @@ function endGame() {
  */
 function makeApple() {
   // TODO 4, Part 2: Fill in this function's code block
+  apple = {};
   apple.element = $("<div>").addClass("apple").appendTo(board);
 
   var randomPosition = getRandomAvailablePosition();
@@ -278,9 +279,6 @@ function makeApple() {
   apple.column = randomPosition.column;
 
   repositionSquare(apple);
-
-
-
 }
 
 /* Create an HTML element for a snakeSquare using jQuery. Then, given a row and
@@ -352,11 +350,11 @@ function repositionSquare(square) {
   var row = square.row;
   var column = square.column;
 
-  var buffer = 20;
+  
 
   // position the square on the screen according to the row and column
-  squareElement.css("left", column * SQUARE_SIZE + buffer);
-  squareElement.css("top", row * SQUARE_SIZE + buffer);
+ squareElement.css("left", column * SQUARE_SIZE + "px");
+ squareElement.css("top", row * SQUARE_SIZE + "px");
 }
 
 /* Returns a (row,column) Object that is not occupied by another game component

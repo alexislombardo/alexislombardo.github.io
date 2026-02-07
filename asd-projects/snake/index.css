@@ -7,7 +7,9 @@ body {
   width: 500px;
   height: 500px;
   border: 1px solid white;
-  background-image: url("../../images/snake\ bkgr.jpg")
+  position: relative;
+  box-sizing: border-box;
+  background-image: url("../../images/snake\ bkgr.jpg")  
 }
 
 #score, #highScore {
@@ -23,12 +25,12 @@ body {
 }
 
 .snake {
-  background-color: green;
+  background-color: rgb(93, 27, 179);
   z-index: 2;
 }
 
 #snake-head {
-  background-color: darkgreen;
+  background-color: rgb(93, 27, 179);
 }
 
 .apple {
