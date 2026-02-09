@@ -4,7 +4,7 @@ $(document).ready(function () {
 $("<div>").
   css("height", 15)
   .css("width", 15)
-  .css("background-color", "black")
+  .css("background-color", "white")
   .css("position", "absolute")
   .css("top", 50)
   .css("left", 50)
