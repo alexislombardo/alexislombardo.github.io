@@ -13,12 +13,13 @@ body {
 }
 
 #score, #highScore {
+
+  position:relative;
+  top: 10px;
   color: rgb(255, 255, 255);
 }
 
-#game-over {
-  z-index: 500;
-}
+
 
 .snake, .apple {
   display: block;
