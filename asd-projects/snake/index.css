@@ -16,6 +16,10 @@ body {
   color: rgb(11, 11, 11);
 }
 
+#game-over {
+  z-index: 500;
+}
+
 .snake, .apple {
   display: block;
   width: 20px;
@@ -34,6 +38,7 @@ body {
 }
 
 .apple {
-  background-color: rgb(177, 74, 152);
+  background-image: url("../snake/images/appleSnake2.png");
+  position: absolute;
   z-index: 1;
 }

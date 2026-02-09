@@ -15,7 +15,9 @@ var started = false; // variable to keep track of whether the game has started
 var colors = ["red", "orange", "yellow", "green", "blue", "purple"];
  var colorIndex = 0; 
 // TODO 4, Part 1: Create the apple variable
-const apple = {};
+var apples = [];
+
+
 
 
 // TODO 5, Part 1: Create the snake variable
@@ -57,10 +59,12 @@ function init() {
   snake.head = snake.body[0]; // Mark the first segment as the head
   
   // TODO 4, Part 3: initialize the apple
-   makeApple();
+  apples.length = 0;
+  makeApple();
 
   // TODO 6, Part 1: Initialize the interval
   updateInterval = setInterval(update, 100);
+
 
 }
 
@@ -81,9 +85,9 @@ function update() {
   if (hasHitWall() || hasCollidedWithSnake()) {
     endGame();
   }
-
-  if (hasCollidedWithApple()) {
-    handleAppleCollision();
+  var appleIndex = hasCollidedWithApple();
+  if (appleIndex !== -1) {
+    handleAppleCollision(appleIndex);
   }
 
 
@@ -98,13 +102,13 @@ function checkForNewDirection(event) {
   perpendicular to the current direction
   */
 
-    if (activeKey === KEY.LEFT) {
+    if (activeKey === KEY.LEFT && snake.head.direction !== "right") {
         snake.head.direction = "left";
-    } else if(activeKey === KEY.RIGHT){
+    } else if(activeKey === KEY.RIGHT && snake.head.direction !== "left"){
           snake.head.direction = "right";
-    } else if (activeKey === KEY.UP){
+    } else if (activeKey === KEY.UP && snake.head.direction !== "down"){
           snake.head.direction = "up";
-    } else if (activeKey === KEY.DOWN){
+    } else if (activeKey === KEY.DOWN && snake.head.direction !== "up"){
           snake.head.direction = "down";
     }
   // console.log(snake.head.direction);   
@@ -165,11 +169,7 @@ function moveBodyAToBodyB(bodyA, bodyB){
 
 
 }
-console.log("Moving body A to body B...");
-setTimeout(() => {
-  moveBodyAToBodyB(snake.body[1], snake.head);
-  repositionSquare(snake.body[1]);
-}, 2_000);
+
 
 
 function hasHitWall() {
@@ -193,21 +193,26 @@ function hasCollidedWithApple() {
     
     HINT: Both the apple and the snake's head are aware of their own row and column
   */
-    return ( snake.head.row === apple.row && snake.head.column === apple.column);
-
+    for(var i = 0; i < apples.length; i++){
+      if(snake.head.row === apples[i].row && snake.head.column === apples[i].column){
+        return i;
+      }
+    }
+    return -1;
    }
 
 
   
   
 
-function handleAppleCollision() {
+function handleAppleCollision(index) {
   // increase the score and update the score DOM element
   score++;
   scoreElement.text("Score: " + score);
 
   // Remove existing Apple and create a new one
-  apple.element.remove();
+  apples[index].element.remove();
+  apples.splice(index, 1);
   
 
   var row = snake.tail.row;
@@ -219,8 +224,11 @@ function handleAppleCollision() {
   if(colorIndex >= colors.length){
     colorIndex = 0;
   }
-
-  makeApple();
+  if(apples.length === 0){
+     makeApple();
+    makeApple();
+  }
+ 
 }
 
 function hasCollidedWithSnake() {
@@ -270,6 +278,7 @@ function endGame() {
  */
 function makeApple() {
   // TODO 4, Part 2: Fill in this function's code block
+  var apple = {};
   apple.element = $("<div>").addClass("apple").appendTo(board);
 
   var randomPosition = getRandomAvailablePosition();
@@ -278,6 +287,7 @@ function makeApple() {
   apple.column = randomPosition.column;
 
   repositionSquare(apple);
+  apples.push(apple);
 }
 
 /* Create an HTML element for a snakeSquare using jQuery. Then, given a row and
