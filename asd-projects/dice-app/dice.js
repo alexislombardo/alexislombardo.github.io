@@ -1,23 +1,45 @@
 $(document).ready(function () {
   // Your code goes here
 
-$("<div>").
-  css("height", 15)
-  .css("width", 15)
-  .css("background-color", "white")
-  .css("position", "absolute")
-  .css("top", 50)
-  .css("left", 50)
+$("<div>")
+    .css({
+        height : 15,
+        width: 15,
+        backgroundColor: "white",
+        position: "absolute",
+        borderRadius: "50%",
+        top: 50,
+        left: 50,
+    })
   .appendTo("#die");
+
+  // create sec
+$("<div>")
+    .css({
+        height : 15,
+        width: 15,
+        backgroundColor: "white",
+        position: "absolute",
+        borderRadius: "50%",
+        top: 50,
+        left: 50,
+    })
+
+
+  .appendTo("#die2");
 
   function makeDot(top, left, elementID){
     $("<div>")
-      .css("height", 15)
-      .css("width", 15)
-      .css("background-color", "white")
-      .css("position", "absolute")
-      .css("top", top)
-      .css("left", left)
+        .css({
+            height : 15,
+            width: 15,
+            backgroundColor: "white",
+            position: "absolute",
+            borderRadius: "50%",
+            top: top,
+            left: left,
+        })
+      
       .appendTo(elementID);
   }
 
@@ -55,7 +77,6 @@ $("<div>").
         makeDot(25, 75, dieID); // top right
         makeDot(50, 25, dieID); //middle left
         makeDot(50, 75, dieID); // middle right
-        // bottom row
         makeDot(75, 25, dieID); //bottom left
         makeDot(75, 75, dieID); // bottom right  
 
@@ -65,9 +86,15 @@ $("<div>").
   }
   function handleClick(){
      rollDie("#die");
+
+  }
+  function handleClick2(){
+     rollDie("#die2");
+
   }
 
   $("#die").on("click", handleClick);
+  $("#die2").on("click", handleClick2);
 
 
 });
