@@ -4,15 +4,15 @@ body {
 }
 
 #board {
-  width: 440px;
-  height: 440px;
+  width: 650px;
+  height: 500px;
   border: 1px solid white;
   background-color: black;
   position: relative;
 }
 
-#gameItem {
-  background-color: teal;
+#walker {
+  background-color: rgb(94, 27, 139);
   width: 50px;
   height: 50px;
   position: absolute;

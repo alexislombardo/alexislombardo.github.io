@@ -6,13 +6,26 @@ function runProgram(){
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////////// SETUP /////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
-
+  
   // Constant Variables
   var FRAME_RATE = 60;
   var FRAMES_PER_SECOND_INTERVAL = 1000 / FRAME_RATE;
-  
-  // Game Item Objects
+  const KEY = {
+    ENTER: 13,
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40,
+  };
 
+ 
+  // Game Item Objects
+  var walker = {
+    x: 0,
+    y: 0,
+    speedX: 0,
+    speedY: 0
+  }
 
   // one-time setup
   var interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL);   // execute newFrame every 0.0166 seconds (60 Frames per second)
@@ -23,8 +36,8 @@ function runProgram(){
 
   Note: You can have multiple event listeners for different types of events.
   */
-  $(document).on('eventType', handleEvent);                          
-
+  $(document).on('keydown', handleKeyDown);                          
+  $(document).on('keyup', handleKeyUp);
   ////////////////////////////////////////////////////////////////////////////////
   ///////////////////////// CORE LOGIC ///////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
@@ -34,8 +47,9 @@ function runProgram(){
   by calling this function and executing the code inside.
   */
   function newFrame() {
-    
-
+    repositionameItem();
+    wallCollision();
+    redrawGameItem();
   }
   
   /* 
@@ -44,15 +58,68 @@ function runProgram(){
   
   Note: You can have multiple event handlers for different types of events.
   */
-  function handleEvent(event) {
+  function handleKeyDown(event) {
+     console.log(event.which);
+     if(event.which === KEY.LEFT){
+      walker.speedX = -5;
+     } else if(event.which === KEY.RIGHT){
+      walker.speedX = 5;
+     } else if(event.which === KEY.UP){
+      walker.speedY = -5;
+     } else if(event.which === KEY.DOWN){
+      walker.speedY = 5;
+     }
+  }
 
+  function handleKeyUp(event) {
+     console.log(event.which);
+     if(event.which === KEY.LEFT){
+      walker.speedX = 0;
+     } else if(event.which === KEY.RIGHT){
+      walker.speedX = 0;
+     } else if(event.which === KEY.UP){
+      walker.speedY = 0;
+     } else if(event.which === KEY.DOWN){
+      walker.speedY = 0;
+     }
   }
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+  function repositionameItem(){
+    walker.x += walker.speedX
+    walker.y += walker.speedY
+  }
+  function redrawGameItem(){
+    $("#walker").css("left", walker.x);
+    $("#walker").css("top", walker.y);
+  }
 
-  
+   function wallCollision(){
+
+  // left
+   if(walker.x < 0 ){
+    walker.x = 0;
+   } 
+   //right
+   if(walker.x > $("#board").width() - $("#walker").width()){
+     walker.x = $("#board").width() - $("#walker").width();
+   } 
+   // top
+   if(walker.y < 0 ){
+    walker.y = 0;
+   } 
+   // bottom
+   if(walker.y > $("#board").height() - $("#walker").height()){
+     walker.y = $("#board").height() - $("#walker").height();
+   }
+
+
+
+
+  }
+ 
   function endGame() {
     // stop the interval timer
     clearInterval(interval);
