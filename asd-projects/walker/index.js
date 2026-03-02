@@ -86,6 +86,8 @@ function runProgram(){
   
   Note: You can have multiple event handlers for different types of events.
   */
+
+  // tracks the buttons pressed on the right side of the keyboard and compares it to the numbers stored im the object KEY; allowing for our players to move 
   function handleKeyDown(event) {
      console.log(event.which);
      if(event.which === KEY.LEFT){
@@ -101,7 +103,7 @@ function runProgram(){
       player2.speedY = 5;
       player2.speedX = 0;
      }
-
+// tracks the buttons pressed on the left side of the keyboard and compares it to the numbers stored in the object KEY; allowing for our players to move 
       if(event.which === KEY.A){
       player1.speedX = -5;
       player1.speedY = 0;
@@ -122,7 +124,7 @@ function runProgram(){
     }
 
   }
-
+// triggers when up,down,right,left or a,s,w,d buttons released and sets the speed equal to 0 so the player stops moving in its respective direction
   function handleKeyUp(event) {
      console.log(event.which);
      if(event.which === KEY.LEFT){
@@ -150,17 +152,18 @@ function runProgram(){
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+// takes the current x value and increases it by the speed, causing player to move
   function repositionameItem(player){
     player.x += player.speedX
     player.y += player.speedY
   }
-
+// positions our players
   function redrawGameItem(player){
     $(player.id).css("left", player.x);
     $(player.id).css("top", player.y);
 
   }
-
+// stops players from going off the the designated board by comparing their x and y values to the wiidth and height of the board
   function wallCollision(player){
     if(player.x < 0 ){
       player.x = 0; // left
@@ -172,7 +175,7 @@ function runProgram(){
       player.y = BOARD_HEIGHT - PLAYER_HEIGHT; // bottom
     }
   }
- 
+ // player background color changes randomly when space button is pressed
   function handleColor(player){
     var randomColor = "#000000".replace(/0/g, function () {
     return (~~(Math.random() * 16)).toString(16);
@@ -186,7 +189,7 @@ function runProgram(){
   topA < bottomB
   bottomA > topB
   */
-
+// checks if our players x and y values overlap
   function doCollide(a, b){
     return (
       a.x < b.x + PLAYER_WIDTH &&
