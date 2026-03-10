@@ -67,7 +67,7 @@ function applyFilterNoBackground(filterFunction){
 
 // TODO 6: Create the keepInBounds function
 function keepInBounds(num1){
-  return (num1 < 0) ? 0 : (num1 > 225) ? 225 : num1;
+  return (num1 < 0) ? 0 : (num1 > 255) ? 255 : num1;
 }
 
 
@@ -89,7 +89,7 @@ function decreaseBlue(array){
 }
 
 function increaseGreenByBlue(array){
-  array[GREEN] = array[GREEN] + array[BLUE];
+  array[GREEN] = keepInBounds(array[GREEN] + array[BLUE]);
 }
 
 // CHALLENGE code goes below here
