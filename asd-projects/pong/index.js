@@ -28,7 +28,7 @@ function runProgram(){
       speedX: speedX,
       speedY: speedY,
       width: $(id).width(),
-      height: $(id).width()
+      height: $(id).height()
     }
   }
 
@@ -70,7 +70,9 @@ function runProgram(){
     drawGameItem(rightPaddle);
 
     // handles pandle movement
-    movePaddles();
+    movePaddles(leftPaddle);
+    movePaddles(rightPaddle);
+
     keepPaddlesInBounds(leftPaddle);
     keepPaddlesInBounds(rightPaddle);
 
@@ -137,9 +139,9 @@ function runProgram(){
     }
   }
 
-  function movePaddles() {
-    leftPaddle.y += leftPaddle.speedY;
-    rightPaddle.y += rightPaddle.speedY;
+  function movePaddles(paddle) {
+    paddle.y += paddle.speedY;
+    
   }
 
   function keepPaddlesInBounds(paddle) {

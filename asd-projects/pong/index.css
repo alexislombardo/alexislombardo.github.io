@@ -17,15 +17,30 @@ body {
   position: relative;
   box-sizing: border-box;
 }
-
+.box{
+  background-color: azure;
+  height: 125px;
+  width: 125px;
+  font-size: 15em;
+  text-align: center;
+}
 #scoreOne {
   background-color: azure;
   height: 125px;
   width: 125px;
   font-size: 15em;
   text-align: center;
-  translate: translateY(-150px);
 }
+
+#scoreTwo {
+  background-color: azure;
+  height: 125px;
+  width: 125px;
+  font-size: 15em;
+  text-align: center;
+  
+}
+
 
 #pingPong {
   background-color: rgb(255, 255, 255);
