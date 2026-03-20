@@ -8,6 +8,7 @@ body {
   margin: 0;
 }
 
+
 #board {
   background-color: rgb(38, 23, 170);
   width: 500px;
@@ -17,13 +18,21 @@ body {
   box-sizing: border-box;
 }
 
-#gameItem {
+#scoreOne {
+  background-color: azure;
+  height: 125px;
+  width: 125px;
+  font-size: 15em;
+  text-align: center;
+  translate: translateY(-150px);
+}
+
+#pingPong {
   background-color: rgb(255, 255, 255);
   width: 20px;
   height: 20px;
   position: absolute;
-  border-radius: 50%;
-
+  border-radius: 50px;
   left: 0;   
   top: 0;    
 }
@@ -39,7 +48,6 @@ body {
   transform: translateY(-50%);
   border-radius: 999px;
   box-shadow: 0 0 8px rgb(107, 106, 106); 
-
 }
 
 #rightPaddle {
