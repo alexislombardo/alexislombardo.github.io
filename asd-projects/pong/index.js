@@ -64,6 +64,7 @@ function runProgram(){
     if (pingBall.y <= 0 || pingBall.y + pingBall.height >= 600) {
       pingBall.speedY *= -1;
     } 
+    
     // draws the game items 
     drawGameItem(pingBall);
     drawGameItem(leftPaddle);
@@ -147,7 +148,7 @@ function runProgram(){
   function keepPaddlesInBounds(paddle) {
     // left paddle
     if (paddle.y < 0) paddle.y = 0;
-    if (paddle.y > BOARD_HEIGHT - paddle.height) {
+    if (paddle.y > BOARD_HEIGHT  - paddle.height ) {
       paddle.y = BOARD_HEIGHT - paddle.height;
     }
 
