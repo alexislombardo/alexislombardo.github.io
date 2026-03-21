@@ -31,7 +31,8 @@ function runProgram(){
       height: $(id).height()
     }
   }
-
+  var leftScore = 0;
+  var rightScore = 0;
   var pingBall = createGameItem("#pingPong", 0, 0, 0, 0);
   startBall(); // sets the position and gives the ball a random speed
   var leftPaddle = createGameItem("#leftPaddle", 0, 260, 0, 0);
@@ -41,8 +42,8 @@ function runProgram(){
   let interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL);   // execute newFrame every 0.0166 seconds (60 Frames per second)
   
   // change 'eventType' to the type of event you want to handle
-  $(document).on("keydown", handleKeyDown);
-  $(document).on("keyup", handleKeyUp);
+  $(document).on("keydown keyup", handleEvent);
+  
   ////////////////////////////////////////////////////////////////////////////////
   ///////////////////////// CORE LOGIC ///////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
@@ -55,20 +56,27 @@ function runProgram(){
     pingBall.x += pingBall.speedX;
     pingBall.y += pingBall.speedY;
 
-  // bounce off left/right walls
-    if (pingBall.x <= 0 || pingBall.x + pingBall.width >= 500) {
+
+    // LEFT paddle collision
+    if (doCollide(pingBall, leftPaddle)) {
       pingBall.speedX *= -1;
+      pingBall.x = leftPaddle.x + leftPaddle.width; // prevent sticking
     }
 
-    // bounce off top/bottom walls
-    if (pingBall.y <= 0 || pingBall.y + pingBall.height >= 600) {
+    // RIGHT paddle collision
+    if (doCollide(pingBall, rightPaddle)) {
+      pingBall.speedX *= -1;
+      pingBall.x = rightPaddle.x - pingBall.width; // prevent sticking
+    }
+    
+
+    // bounce off top/bottom walls (keeps ball within frame but allows for scoring)
+    if (pingBall.y <= 0 || pingBall.y + pingBall.height >= BOARD_HEIGHT) {
       pingBall.speedY *= -1;
     } 
-    
-    // draws the game items 
-    drawGameItem(pingBall);
-    drawGameItem(leftPaddle);
-    drawGameItem(rightPaddle);
+
+    // checks and updates score
+    handleScore();
 
     // handles pandle movement
     movePaddles(leftPaddle);
@@ -77,7 +85,10 @@ function runProgram(){
     keepPaddlesInBounds(leftPaddle);
     keepPaddlesInBounds(rightPaddle);
 
-  
+    // draws the game items 
+    drawGameItem(pingBall);
+    drawGameItem(leftPaddle);
+    drawGameItem(rightPaddle);
 
   }
   
@@ -85,8 +96,24 @@ function runProgram(){
   Called in response to events.
   */
   function handleEvent(event) {
-    
-  }
+    var isKeyDown = event.type === "keydown";
+
+    // RIGHT paddle
+    if (event.which === KEY.UP) {
+      rightPaddle.speedY = isKeyDown ? -5 : 0;
+    } 
+    else if (event.which === KEY.DOWN) {
+      rightPaddle.speedY = isKeyDown ? 5 : 0;
+    }
+
+    // LEFT paddle
+    if (event.which === KEY.W) {
+      leftPaddle.speedY = isKeyDown ? -5 : 0;
+    } 
+    else if (event.which === KEY.S) {
+      leftPaddle.speedY = isKeyDown ? 5 : 0;
+    }
+}
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
@@ -102,43 +129,7 @@ function runProgram(){
     // random vertical speed
     pingBall.speedY = (Math.random() * 4) - 2;
   }
-  function handleKeyDown(event){
-    console.log(event.which);
-
-    // right paddle 
-    if (event.which === KEY.UP) {
-      rightPaddle.speedY = -5;
-    } else if (event.which === KEY.DOWN) {
-      rightPaddle.speedY = 5;
-    }
-
-    // left paddle (
-    if (event.which === KEY.W) {
-      leftPaddle.speedY = -5;
-    } else if (event.which === KEY.S) {
-      leftPaddle.speedY = 5;
-    }
-    
-  }
-  function handleKeyUp(event) {
-    console.log(event.which);
-
-    // RIGHT paddle
-    if (event.which === KEY.UP) {
-      rightPaddle.speedY = 0;
-    } else if (event.which === KEY.DOWN) {
-      rightPaddle.speedY = 0;
-    }
-
-    console.log(event.which);
-
-    // LEFT paddle
-    if (event.which === KEY.W) {
-      leftPaddle.speedY = 0;
-    } else if (event.which === KEY.S) {
-      leftPaddle.speedY = 0;
-    }
-  }
+  
 
   function movePaddles(paddle) {
     paddle.y += paddle.speedY;
@@ -154,10 +145,53 @@ function runProgram(){
 
 }
 
+// detects for paddle and ball collision
+function doCollide(a, b){
+  return (
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + a.height > b.y
+  );
+}
 
-    function drawGameItem(item) {
-    $(item.id).css("top", item.y);
-    $(item.id).css("left", item.x);
+// updates score by detecting wether or not the ball hit the left or right side of the board
+
+function addPoint(id) {
+  if (id === "left") {
+    leftScore++;
+    $("#leftScore").text(leftScore);
+  } else {
+    rightScore++;
+    $("#rightScore").text(rightScore);
+  }
+}
+
+function handleScore() {
+  if (pingBall.x <= 0) {
+    addPoint("right");
+    startBall();
+  }
+
+  if (pingBall.x + pingBall.width >= BOARD_WIDTH) {
+    addPoint("left");
+    startBall();
+  }
+}
+
+function checkScore(){
+  if(leftScore === 7){
+   $("#board").append("<h1 id='winner'>Left Player Wins!</h1>");
+    endGame();
+  } else if(rightScore === 7){
+      $("#board").append("<h1 id='winner'> Right Player Wins!</h1>");
+      endGame();
+  }
+}
+
+function drawGameItem(item) {
+  $(item.id).css("top", item.y);
+  $(item.id).css("left", item.x);
 }
   
   function endGame() {

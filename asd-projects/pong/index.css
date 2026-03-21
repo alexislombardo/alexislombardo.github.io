@@ -7,6 +7,27 @@ body {
   height: 100vh;
   margin: 0;
 }
+#gameWrapper {
+  position: relative;
+}
+#leftScore, #rightScore {
+  position: absolute;
+  top: -40px; /* puts score ABOVE the board */
+  font-size: 32px;
+  font-family: monospace;
+  letter-spacing: 2px;
+  color: white;
+}
+
+#leftScore {
+  left: 25%;
+  transform: translateX(-50%);
+}
+
+#rightScore {
+  right: 25%;
+  transform: translateX(50%);
+}
 
 #board {
   background-color: black;
@@ -16,6 +37,7 @@ body {
   position: relative;
   box-sizing: border-box;
 }
+
 /* Added the dashed line in the center */
 #board::after {
   content: "";
