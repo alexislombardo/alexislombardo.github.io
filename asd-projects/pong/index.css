@@ -8,34 +8,34 @@ body {
   margin: 0;
 }
 
-
 #board {
-  background-color: rgb(38, 23, 170);
+  background-color: black;
   width: 500px;
   height: 600px;
-  border: 1px solid white;
+  border: 4px solid white;
   position: relative;
   box-sizing: border-box;
 }
-#scoreBox{
+/* Added the dashed line in the center */
+#board::after {
+  content: "";
   position: absolute;
-  top: calc(50% - 250px);
-  left: calc(50%);
-  transform: translate(-50%);
-  width: 500px
-}
-.box{
-  position: absolute;
-  background-color: azure;
-  height: 100px;
-  width: 100px;
-  font-size: 12em;
-  transform: translateY(-375px);
-  transform: translateX(100px);
-  
-}
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 
+  width: 6px;
 
+  background: repeating-linear-gradient(
+    to bottom,
+    white,
+    white 20px,
+    transparent 20px,
+    transparent 40px
+  );
+
+}
 
 
 #pingPong {
@@ -49,27 +49,14 @@ body {
 }
 
 
-#leftPaddle {
-  background-color: rgb(0, 0, 0);
-  width: 20px;
+#leftPaddle, #rightPaddle {
+  background-color: white;
+  width: 12px;
   height: 80px;
   position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;              
   border-radius: 999px;
-  box-shadow: 0 0 8px rgb(107, 106, 106); 
 }
 
-#rightPaddle {
-  background-color: rgb(0, 0, 0);
-  width: 20px;
-  height: 80px;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  border-radius: 999px;
-  box-shadow: 0 0 10px rgb(107, 106, 106);
-}
-
+#leftPaddle { left: 0; }
+#rightPaddle { right: 0; }
