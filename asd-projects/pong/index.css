@@ -7,6 +7,19 @@ body {
   height: 100vh;
   margin: 0;
 }
+
+#winText {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 32px;
+  font-family: monospace;
+  letter-spacing: 2px;
+  color: white;
+}
+
 #gameWrapper {
   position: relative;
 }
@@ -82,3 +95,14 @@ body {
 
 #leftPaddle { left: 0; }
 #rightPaddle { right: 0; }
+
+#playAgain{
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -1%);
+  background-color: azure;
+  text-align: center;
+  color: black;
+  width: 200px;
+  height: 75px;
+}

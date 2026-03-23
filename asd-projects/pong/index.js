@@ -31,8 +31,8 @@ function runProgram(){
       height: $(id).height()
     }
   }
-  var leftScore = 0;
-  var rightScore = 0;
+  var leftScore = 6;
+  var rightScore = 6;
   var pingBall = createGameItem("#pingPong", 0, 0, 0, 0);
   startBall(); // sets the position and gives the ball a random speed
   var leftPaddle = createGameItem("#leftPaddle", 0, 260, 0, 0);
@@ -172,7 +172,7 @@ function handleScore() {
     addPoint("right");
     startBall();
     checkScore();
-    
+
   }
 
   if (pingBall.x + pingBall.width >= BOARD_WIDTH) {
@@ -184,10 +184,10 @@ function handleScore() {
 
 function checkScore(){
   if(leftScore >= 7){
-   $("#board").append("<h1 id='winner'>Left Player Wins!</h1>");
+   $("h1").text("Left Player Wins!").appendTo('body');
     endGame();
   } else if(rightScore >= 7){
-      $("#board").append("<h1 id='winner'>Right Player Wins!</h1>");
+    $("h1").text("Right Player Wins!").appendTo('body');
       endGame();
   }
 }
