@@ -171,20 +171,23 @@ function handleScore() {
   if (pingBall.x <= 0) {
     addPoint("right");
     startBall();
+    checkScore();
+    
   }
 
   if (pingBall.x + pingBall.width >= BOARD_WIDTH) {
     addPoint("left");
     startBall();
+    checkScore();
   }
 }
 
 function checkScore(){
-  if(leftScore === 7){
+  if(leftScore >= 7){
    $("#board").append("<h1 id='winner'>Left Player Wins!</h1>");
     endGame();
-  } else if(rightScore === 7){
-      $("#board").append("<h1 id='winner'> Right Player Wins!</h1>");
+  } else if(rightScore >= 7){
+      $("#board").append("<h1 id='winner'>Right Player Wins!</h1>");
       endGame();
   }
 }
