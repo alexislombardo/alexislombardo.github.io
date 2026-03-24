@@ -117,3 +117,32 @@ body {
   width: 200px;
   height: 75px;
 }
+
+#modeSelect {
+  position: absolute;
+  top: -90px; /* sits above score */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+}
+
+#modeSelect button {
+  background-color: rgb(129, 218, 218);
+  border: none;
+  font-size: 18px;
+  font-family: monospace;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+#modeSelect button:hover {
+  background-color: white;
+}
+
+.activeMode {
+  background-color: white !important;
+  color: black;
+}

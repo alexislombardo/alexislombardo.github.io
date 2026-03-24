@@ -39,7 +39,18 @@ function runProgram(){
   var leftPaddle = createGameItem("#leftPaddle", 0, 260, 0, 0);
   var rightPaddle = createGameItem("#rightPaddle", BOARD_WIDTH - $("#rightPaddle").width(),  260, 0, 0);
   $("#playAgain").hide();
+  var gameMode = "two";
+  $("#onePlayer").click(function() {
+    gameMode = "one";
+    $("#onePlayer").addClass("activeMode");
+    $("#twoPlayer").removeClass("activeMode");
+  });
 
+  $("#twoPlayer").click(function() {
+    gameMode = "two";
+    $("#twoPlayer").addClass("activeMode");
+    $("#onePlayer").removeClass("activeMode");
+  });
   // confetti variables
   var duration = 30 * 1000;
   var end = Date.now() + duration;
@@ -85,8 +96,16 @@ function runProgram(){
     handleScore();
 
     // handles pandle movement
+   
+
     movePaddles(leftPaddle);
-    movePaddles(rightPaddle);
+
+    // AI vs right player logic
+    if (gameMode === "one") {
+      moveAIPaddle();
+    } else {
+      movePaddles(rightPaddle);
+    }
 
     keepPaddlesInBounds(leftPaddle);
     keepPaddlesInBounds(rightPaddle);
@@ -104,14 +123,15 @@ function runProgram(){
   function handleEvent(event) {
     var isKeyDown = event.type === "keydown";
 
-    // RIGHT paddle
-    if (event.which === KEY.UP) {
-      rightPaddle.speedY = isKeyDown ? -5 : 0;
-    } 
-    else if (event.which === KEY.DOWN) {
-      rightPaddle.speedY = isKeyDown ? 5 : 0;
-    }
-
+    // RIGHT paddle (only in 2-player mode)
+    if (gameMode === "two") {
+      if (event.which === KEY.UP) {
+        rightPaddle.speedY = isKeyDown ? -5 : 0;
+      } 
+      else if (event.which === KEY.DOWN) {
+        rightPaddle.speedY = isKeyDown ? 5 : 0;
+      }
+}
     // LEFT paddle
     if (event.which === KEY.W) {
       leftPaddle.speedY = isKeyDown ? -5 : 0;
@@ -124,23 +144,36 @@ function runProgram(){
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+  
   function startBall(){
-    // creates starting position for pingpong ball
     pingBall.x = 240;
     pingBall.y = 290;
 
     // random horizontal direction
-    pingBall.speedX = Math.random() < 0.5 ? -4 : 4;
+    pingBall.speedX = Math.random() < 0.5 ? -6 : 6;
 
     // random vertical speed
-    pingBall.speedY = (Math.random() * 4) - 2;
+    pingBall.speedY = (Math.random() * 6) - 3;
   }
-  
-
   function movePaddles(paddle) {
     // controls paddle movement
     paddle.y += paddle.speedY;
   }
+  
+  function moveAIPaddle() {
+    var paddleCenter = rightPaddle.y + rightPaddle.height / 2;
+    var ballCenter = pingBall.y + pingBall.height / 2;
+
+    // only react when ball is coming toward AI
+    if (pingBall.speedX > 0) {
+      if (paddleCenter < ballCenter - 10) {
+        rightPaddle.y += 7;
+      } else if (paddleCenter > ballCenter + 10) {
+        rightPaddle.y -= 7;
+      }
+    }
+
+}
 
   function keepPaddlesInBounds(paddle) {
     // left paddle
