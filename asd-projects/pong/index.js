@@ -31,13 +31,19 @@ function runProgram(){
       height: $(id).height()
     }
   }
-  var leftScore = 6;
-  var rightScore = 6;
-  var pingBall = createGameItem("#pingPong", 0, 0, 0, 0);
+
+  var leftScore = 0; // holds the starting value of the left player's score
+  var rightScore = 0; // holds the starting value of the right player's score
+  var pingBall = createGameItem("#pingPong", 0, 0, 0, 0); // creates the ball using the factory function
   startBall(); // sets the position and gives the ball a random speed
   var leftPaddle = createGameItem("#leftPaddle", 0, 260, 0, 0);
   var rightPaddle = createGameItem("#rightPaddle", BOARD_WIDTH - $("#rightPaddle").width(),  260, 0, 0);
-  
+  $("#playAgain").hide();
+
+  // confetti variables
+  var duration = 30 * 1000;
+  var end = Date.now() + duration;
+
   // one-time setup
   let interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL);   // execute newFrame every 0.0166 seconds (60 Frames per second)
   
@@ -53,6 +59,7 @@ function runProgram(){
   by calling this function and executing the code inside.
   */
   function newFrame() {
+    // makes the ball move when window is loaded
     pingBall.x += pingBall.speedX;
     pingBall.y += pingBall.speedY;
 
@@ -69,7 +76,6 @@ function runProgram(){
       pingBall.x = rightPaddle.x - pingBall.width; // prevent sticking
     }
     
-
     // bounce off top/bottom walls (keeps ball within frame but allows for scoring)
     if (pingBall.y <= 0 || pingBall.y + pingBall.height >= BOARD_HEIGHT) {
       pingBall.speedY *= -1;
@@ -132,8 +138,8 @@ function runProgram(){
   
 
   function movePaddles(paddle) {
+    // controls paddle movement
     paddle.y += paddle.speedY;
-    
   }
 
   function keepPaddlesInBounds(paddle) {
@@ -142,7 +148,6 @@ function runProgram(){
     if (paddle.y > BOARD_HEIGHT  - paddle.height ) {
       paddle.y = BOARD_HEIGHT - paddle.height;
     }
-
 }
 
 // detects for paddle and ball collision
@@ -156,7 +161,6 @@ function doCollide(a, b){
 }
 
 // updates score by detecting wether or not the ball hit the left or right side of the board
-
 function addPoint(id) {
   if (id === "left") {
     leftScore++;
@@ -168,13 +172,13 @@ function addPoint(id) {
 }
 
 function handleScore() {
+  // checks whether right paddle hit the ball onto the left side of the board
   if (pingBall.x <= 0) {
     addPoint("right");
     startBall();
     checkScore();
-
   }
-
+  // checks whether left paddle hit the ball onto the right side of the board
   if (pingBall.x + pingBall.width >= BOARD_WIDTH) {
     addPoint("left");
     startBall();
@@ -183,15 +187,44 @@ function handleScore() {
 }
 
 function checkScore(){
+  // checks the left player's score
   if(leftScore >= 7){
    $("h1").text("Left Player Wins!").appendTo('body');
+   frame();
+   // restarts the game after condition is met
+   $("#playAgain").show();
     endGame();
   } else if(rightScore >= 7){
-    $("h1").text("Right Player Wins!").appendTo('body');
+      // checks the right player's score
+      $("h1").text("Right Player Wins!").appendTo('body');
+      frame();
+      // restarts the game after condition is met
+      $("#playAgain").show();
       endGame();
-  }
+    }
 }
+function frame(){
+  // launch a few confetti from the left edge
+  confetti({
+    particleCount: 7,
+    angle: 60,
+    spread: 55,
+    origin: { x: 0 }
+  });
+  // and launch a few from the right edge
+  confetti({
+    particleCount: 7,
+    angle: 120,
+    spread: 55,
+    origin: { x: 1 }
+  });
 
+  // keep going until we are out of time
+  if (Date.now() < end) {
+    requestAnimationFrame(frame);
+  }
+
+}
 function drawGameItem(item) {
   $(item.id).css("top", item.y);
   $(item.id).css("left", item.x);
@@ -206,3 +239,14 @@ function drawGameItem(item) {
   }
   
 }
+ 
+
+/*
+
+Attributions for confetti code and canvas library
+
+https://confetti.js.org/#
+https://github.com/catdad/canvas-confetti?tab=readme-ov-file
+
+
+*/
