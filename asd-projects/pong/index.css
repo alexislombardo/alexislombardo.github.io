@@ -7,17 +7,66 @@ body {
   height: 100vh;
   margin: 0;
 }
+#startMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 4, 53);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100; /* sits on top of everything */
+}
+
+#startMenu h1 {
+  animation: pulse 1.5s infinite alternate;
+  font-size: 90px;
+  color: white;
+  font-family: monospace;
+  margin-bottom: 40px;
+  text-shadow: 0 0 20px white;
+}
+
+
+@keyframes pulse {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+#startMenu button {
+  padding: 15px 40px;
+  margin: 15px;
+  font-size: 22px;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+
+  background-color: rgb(129, 218, 218);
+  color: black;
+  font-family: monospace;
+
+  transition: 0.2s;
+}
+
+#startMenu button:hover {
+  background-color: white;
+  transform: scale(1.05);
+}
 
 #winText {
   position: absolute;
-  top: 5%;
+  top: 20px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   text-align: center;
-  font-size: 32px;
+  font-size: 36px;
   font-family: monospace;
   letter-spacing: 2px;
-  color: white;
+  color: rgb(29, 80, 218);
+  z-index: 200;
 }
 
 #gameWrapper {
@@ -118,31 +167,5 @@ body {
   height: 75px;
 }
 
-#modeSelect {
-  position: absolute;
-  top: -90px; /* sits above score */
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 15px;
-}
 
-#modeSelect button {
-  background-color: rgb(129, 218, 218);
-  border: none;
-  font-size: 18px;
-  font-family: monospace;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: 0.2s;
-}
 
-#modeSelect button:hover {
-  background-color: white;
-}
-
-.activeMode {
-  background-color: white !important;
-  color: black;
-}

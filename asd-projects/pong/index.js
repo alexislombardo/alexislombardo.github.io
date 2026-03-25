@@ -1,7 +1,44 @@
 /* global $, sessionStorage */
+ // wait for the HTML / CSS elements of the page to fully load, then execute runProgram()
+$(document).ready(function () {
+  $("#board").hide();
+  $("#playAgain").hide();
+  $("#leftScore").hide();
+  $("#rightScore").hide();
+  $("#winText").hide();
 
-$(document).ready(runProgram); // wait for the HTML / CSS elements of the page to fully load, then execute runProgram()
-  
+  // click handlers
+  $("#onePlayer").click(function () {
+    gameMode = "one";
+    startGame();
+  });
+
+  $("#twoPlayer").click(function () {
+    gameMode = "two";
+    startGame();
+  });
+});
+var gameMode = "";
+
+$("#onePlayer").click(function () {
+  gameMode = "one";
+  startGame();
+});
+
+$("#twoPlayer").click(function () {
+  gameMode = "two";
+  startGame();
+});
+
+function startGame() {
+  $("#startMenu").hide();
+
+  $("#board").show();
+  $("#leftScore").show();
+  $("#rightScore").show();
+
+  runProgram(); // start game AFTER click
+}
 function runProgram(){
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////////// SETUP /////////////////////////////////////////////
@@ -20,6 +57,7 @@ function runProgram(){
   };
   
   // Game Item Objects
+  // uses a factory function to create objects
   function createGameItem(id, x, y, speedX, speedY){
     return {
       id: id,
@@ -39,18 +77,8 @@ function runProgram(){
   var leftPaddle = createGameItem("#leftPaddle", 0, 260, 0, 0);
   var rightPaddle = createGameItem("#rightPaddle", BOARD_WIDTH - $("#rightPaddle").width(),  260, 0, 0);
   $("#playAgain").hide();
-  var gameMode = "two";
-  $("#onePlayer").click(function() {
-    gameMode = "one";
-    $("#onePlayer").addClass("activeMode");
-    $("#twoPlayer").removeClass("activeMode");
-  });
-
-  $("#twoPlayer").click(function() {
-    gameMode = "two";
-    $("#twoPlayer").addClass("activeMode");
-    $("#onePlayer").removeClass("activeMode");
-  });
+  
+ 
   // confetti variables
   var duration = 30 * 1000;
   var end = Date.now() + duration;
@@ -159,22 +187,46 @@ function runProgram(){
     // controls paddle movement
     paddle.y += paddle.speedY;
   }
+
   
+ // stores the "imperfect target" the AI is trying to reach
+  var aiTargetY = 0;
+  //controls the movement of the right paddle when 1 player mode is selected
   function moveAIPaddle() {
-    var paddleCenter = rightPaddle.y + rightPaddle.height / 2;
-    var ballCenter = pingBall.y + pingBall.height / 2;
+      var paddleCenter = rightPaddle.y + rightPaddle.height / 2;
 
-    // only react when ball is coming toward AI
-    if (pingBall.speedX > 0) {
-      if (paddleCenter < ballCenter - 10) {
-        rightPaddle.y += 7;
-      } else if (paddleCenter > ballCenter + 10) {
-        rightPaddle.y -= 7;
+      // update target occasionally (reaction delay)
+      if (Math.random() < 0.1) { 
+          var ballCenter = pingBall.y + pingBall.height / 2;
+
+          // Add random error (makes AI aim slightly off)
+          var error = (Math.random() - 0.5) * 60; // range: -30 to +30
+
+          aiTargetY = ballCenter + error;
       }
-    }
 
-}
+      // distance to the imperfect target
+      var distance = aiTargetY - paddleCenter;
 
+      // smooth movement 
+      var smoothness = 0.08;
+
+      // max speed cap
+      var maxSpeed = 5;
+
+      var move = distance * smoothness;
+
+      // limit speed
+      if (move > maxSpeed) move = maxSpeed;
+      if (move < -maxSpeed) move = -maxSpeed;
+
+      // sometimes make a big mistake (makes it beatable)
+      if (Math.random() < 0.01) {
+          move *= -1; // go the wrong way
+      }
+
+      rightPaddle.y += move;
+  }
   function keepPaddlesInBounds(paddle) {
     // left paddle
     if (paddle.y < 0) paddle.y = 0;
@@ -203,65 +255,69 @@ function addPoint(id) {
     $("#rightScore").text(rightScore);
   }
 }
+  function handleScore() {
+    if (pingBall.x <= 0) {
+      addPoint("right");
+      checkScore();  
 
-function handleScore() {
-  // checks whether right paddle hit the ball onto the left side of the board
-  if (pingBall.x <= 0) {
-    addPoint("right");
-    startBall();
-    checkScore();
-  }
-  // checks whether left paddle hit the ball onto the right side of the board
-  if (pingBall.x + pingBall.width >= BOARD_WIDTH) {
-    addPoint("left");
-    startBall();
-    checkScore();
-  }
-}
-
-function checkScore(){
-  // checks the left player's score
-  if(leftScore >= 7){
-   $("h1").text("Left Player Wins!").appendTo('body');
-   frame();
-   // restarts the game after condition is met
-   $("#playAgain").show();
-    endGame();
-  } else if(rightScore >= 7){
-      // checks the right player's score
-      $("h1").text("Right Player Wins!").appendTo('body');
-      frame();
-      // restarts the game after condition is met
-      $("#playAgain").show();
-      endGame();
+      if (rightScore < 7) {
+        startBall();  // only reset if game is not over
+      }
     }
-}
-function frame(){
-  // launch a few confetti from the left edge
-  confetti({
-    particleCount: 7,
-    angle: 60,
-    spread: 55,
-    origin: { x: 0 }
-  });
-  // and launch a few from the right edge
-  confetti({
-    particleCount: 7,
-    angle: 120,
-    spread: 55,
-    origin: { x: 1 }
-  });
 
-  // keep going until we are out of time
-  if (Date.now() < end) {
-    requestAnimationFrame(frame);
+    if (pingBall.x + pingBall.width >= BOARD_WIDTH) {
+      addPoint("left");
+      checkScore(); 
+
+      if (leftScore < 7) {
+        startBall();  // only reset if game is not over
+      }
+    }
   }
 
-}
-function drawGameItem(item) {
-  $(item.id).css("top", item.y);
-  $(item.id).css("left", item.x);
-}
+  function checkScore(){
+    // checks the left player's score
+    if(leftScore >= 7){
+    $("#winText").text("Left Player Wins!").show();
+    frame();
+    // restarts the game after condition is met
+    $("#playAgain").show();
+      endGame();
+    } else if(rightScore >= 7){
+        // checks the right player's score
+        $("#winText").text("Right Player Wins!").show();
+        frame();
+        // restarts the game after condition is met
+        $("#playAgain").show();
+        endGame();
+      }
+  }
+  function frame(){
+    // launch a few confetti from the left edge
+    confetti({
+      particleCount: 7,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+    // and launch a few from the right edge
+    confetti({
+      particleCount: 7,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 }
+    });
+
+    // keep going until we are out of time
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+
+  }
+  function drawGameItem(item) {
+    $(item.id).css("top", item.y);
+    $(item.id).css("left", item.x);
+  }
   
   function endGame() {
     // stop the interval timer
