@@ -221,7 +221,7 @@ function runProgram(){
       if (move < -maxSpeed) move = -maxSpeed;
 
       // sometimes make a big mistake (makes it beatable)
-      if (Math.random() < 0.01) {
+      if (Math.random() < 0.10) {
           move *= -1; // go the wrong way
       }
 
