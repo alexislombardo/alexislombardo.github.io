@@ -55,6 +55,13 @@ function runProgram(){
     W: 87,
     S: 83,
   };
+  const PADDLE = {
+    UP: -5, 
+    DOWN: 5,
+  }
+  const BALL_SPEED = 6;
+  const MAX_VERTICAL_SPEED = 3;
+  const WIN_SCORE = 7;
   
   // Game Item Objects
   // uses a factory function to create objects
@@ -98,42 +105,18 @@ function runProgram(){
   by calling this function and executing the code inside.
   */
   function newFrame() {
-    // makes the ball move when window is loaded
-    pingBall.x += pingBall.speedX;
-    pingBall.y += pingBall.speedY;
-
-
-    // LEFT paddle collision
-    if (doCollide(pingBall, leftPaddle)) {
-      pingBall.speedX *= -1;
-      pingBall.x = leftPaddle.x + leftPaddle.width; // prevent sticking
-    }
-
-    // RIGHT paddle collision
-    if (doCollide(pingBall, rightPaddle)) {
-      pingBall.speedX *= -1;
-      pingBall.x = rightPaddle.x - pingBall.width; // prevent sticking
-    }
-    
-    // bounce off top/bottom walls (keeps ball within frame but allows for scoring)
-    if (pingBall.y <= 0 || pingBall.y + pingBall.height >= BOARD_HEIGHT) {
-      pingBall.speedY *= -1;
-    } 
+    loadWhenOpened();
+    preventSticking();
 
     // checks and updates score
     handleScore();
 
     // handles pandle movement
-   
-
     movePaddles(leftPaddle);
 
     // AI vs right player logic
-    if (gameMode === "one") {
-      moveAIPaddle();
-    } else {
-      movePaddles(rightPaddle);
-    }
+    rightPaddle1PlayerMode();
+    
 
     keepPaddlesInBounds(leftPaddle);
     keepPaddlesInBounds(rightPaddle);
@@ -154,18 +137,18 @@ function runProgram(){
     // RIGHT paddle (only in 2-player mode)
     if (gameMode === "two") {
       if (event.which === KEY.UP) {
-        rightPaddle.speedY = isKeyDown ? -5 : 0;
+        rightPaddle.speedY = isKeyDown ? PADDLE.UP : 0;
       } 
       else if (event.which === KEY.DOWN) {
-        rightPaddle.speedY = isKeyDown ? 5 : 0;
+        rightPaddle.speedY = isKeyDown ? PADDLE.DOWN : 0;
       }
 }
     // LEFT paddle
     if (event.which === KEY.W) {
-      leftPaddle.speedY = isKeyDown ? -5 : 0;
+      leftPaddle.speedY = isKeyDown ? PADDLE.UP : 0;
     } 
     else if (event.which === KEY.S) {
-      leftPaddle.speedY = isKeyDown ? 5 : 0;
+      leftPaddle.speedY = isKeyDown ? PADDLE.DOWN : 0;
     }
 }
 
@@ -178,17 +161,48 @@ function runProgram(){
     pingBall.y = 290;
 
     // random horizontal direction
-    pingBall.speedX = Math.random() < 0.5 ? -6 : 6;
+    pingBall.speedX = Math.random() < 0.5 ? -BALL_SPEED : BALL_SPEED;
 
     // random vertical speed
-    pingBall.speedY = (Math.random() * 6) - 3;
+    pingBall.speedY = Math.random() * (MAX_VERTICAL_SPEED * 2) - MAX_VERTICAL_SPEED;
   }
+
   function movePaddles(paddle) {
     // controls paddle movement
     paddle.y += paddle.speedY;
   }
+  function rightPaddle1PlayerMode(){
+    if (gameMode === "one") {
+      moveAIPaddle();
+    } else {
+      movePaddles(rightPaddle);
+    }
+  }
 
-  
+  function loadWhenOpened(){
+     // makes the ball move when window is loaded
+    pingBall.x += pingBall.speedX;
+    pingBall.y += pingBall.speedY;
+  }
+
+  function preventSticking(){
+    // LEFT paddle collision
+    if (doCollide(pingBall, leftPaddle)) {
+      pingBall.speedX *= -1;
+      pingBall.x = leftPaddle.x + leftPaddle.width; // prevent sticking
+    }
+
+    // RIGHT paddle collision
+    if (doCollide(pingBall, rightPaddle)) {
+      pingBall.speedX *= -1;
+      pingBall.x = rightPaddle.x - pingBall.width; // prevent sticking
+    }
+    
+    // bounce off top/bottom walls (keeps ball within frame but allows for scoring)
+    if (pingBall.y <= 0 || pingBall.y + pingBall.height >= BOARD_HEIGHT) {
+      pingBall.speedY *= -1;
+    } 
+  }
  // stores the "imperfect target" the AI is trying to reach
   var aiTargetY = 0;
   //controls the movement of the right paddle when 1 player mode is selected
@@ -260,7 +274,7 @@ function addPoint(id) {
       addPoint("right");
       checkScore();  
 
-      if (rightScore < 7) {
+      if (rightScore < WIN_SCORE) {
         startBall();  // only reset if game is not over
       }
     }
@@ -269,7 +283,7 @@ function addPoint(id) {
       addPoint("left");
       checkScore(); 
 
-      if (leftScore < 7) {
+      if (leftScore < WIN_SCORE) {
         startBall();  // only reset if game is not over
       }
     }
@@ -277,13 +291,13 @@ function addPoint(id) {
 
   function checkScore(){
     // checks the left player's score
-    if(leftScore >= 7){
+    if(leftScore >= WIN_SCORE){
     $("#winText").text("Left Player Wins!").show();
     frame();
     // restarts the game after condition is met
     $("#playAgain").show();
       endGame();
-    } else if(rightScore >= 7){
+    } else if(rightScore >= WIN_SCORE){
         // checks the right player's score
         $("#winText").text("Right Player Wins!").show();
         frame();
@@ -295,14 +309,14 @@ function addPoint(id) {
   function frame(){
     // launch a few confetti from the left edge
     confetti({
-      particleCount: 7,
+      particleCount: 40,
       angle: 60,
       spread: 55,
       origin: { x: 0 }
     });
     // and launch a few from the right edge
     confetti({
-      particleCount: 7,
+      particleCount: 40,
       angle: 120,
       spread: 55,
       origin: { x: 1 }
