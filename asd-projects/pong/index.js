@@ -309,14 +309,14 @@ function addPoint(id) {
   function frame(){
     // launch a few confetti from the left edge
     confetti({
-      particleCount: 40,
+      particleCount: 10,
       angle: 60,
       spread: 55,
       origin: { x: 0 }
     });
     // and launch a few from the right edge
     confetti({
-      particleCount: 40,
+      particleCount: 10,
       angle: 120,
       spread: 55,
       origin: { x: 1 }
