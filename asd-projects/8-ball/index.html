@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>8-Ball</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+    <div class="wrap">
+    <header>
+        <h1>8-Ball</h1>
+        <span class="tag">Classic Eight-Ball</span>
+    </header>
+
+    <div class="table-shell">
+        <canvas id="tbl" width="860" height="440"></canvas>
+    </div>
+
+    <div class="hud">
+        <div class="group">
+        <span>Solids</span>
+        <div class="swatches" id="solidsRow"></div>
+        </div>
+        <div class="group">
+        <div class="power-wrap"><div class="power-fill" id="powerFill"></div></div>
+        <span id="msg" class="msg">Drag from the cue ball to aim &amp; shoot</span>
+        </div>
+        <div class="group">
+        <div class="swatches" id="stripesRow"></div>
+        <span>Stripes</span>
+        </div>
+        <button id="resetBtn">Re-rack</button>
+    </div>
+    </div>
+
+    <script src="game.js"></script>
+    </body>
+</html>
